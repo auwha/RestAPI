@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         b.btn.setOnClickListener(v -> {
-            MyAsyncTask myAsyncTask = new MyAsyncTask();
+            MyAsyncTask myAsyncTask = new MyAsyncTask(b);
             myAsyncTask.execute();
         });
 
