@@ -9,6 +9,7 @@ import static java.lang.String.valueOf;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.restapi.databinding.ActivityInfoBinding;
 import com.example.restapi.databinding.ActivityMainBinding;
 import com.squareup.picasso.Picasso;
 
@@ -24,9 +25,9 @@ import java.net.URL;
 public class MyAsyncTask extends AsyncTask {
     InputStream inputStream;
     URL url = null;
-    ActivityMainBinding b;
+    ActivityInfoBinding b;
 
-    public MyAsyncTask(ActivityMainBinding b) {
+    public MyAsyncTask(ActivityInfoBinding b) {
         super();
         this.b = b;
     }
@@ -65,16 +66,30 @@ public class MyAsyncTask extends AsyncTask {
                     personName.getString("title"),
                     personName.getString("first"),
                     personName.getString("last"));
+            String phone = person.getString("phone");
             String email = person.getString("email");
+            JSONObject address = person.getJSONObject("location");
+            JSONObject street = address.getJSONObject("street");
+            String fullAddress = format("%s %s, %s, %s",
+                    street.getString("number"),
+                    street.getString("name"),
+                    address.getString("city"),
+                    address.getString("country"));
+            JSONObject birthday = person.getJSONObject("dob");
+            String date = birthday.getString("date");
+            date = date.substring(0, 10);
             String gender = person.getString("gender");
 
             JSONObject picture = person.getJSONObject("picture");
             String link = picture.getString("large");
 
             publishProgress(name, 0);
-            publishProgress(email, 1);
-            publishProgress(gender, 2);
-            publishProgress(link, 3);
+            publishProgress(phone, 1);
+            publishProgress(email, 2);
+            publishProgress(fullAddress, 3);
+            publishProgress(date, 4);
+            publishProgress(gender, 5);
+            publishProgress(link, 6);
 
         } catch (JSONException e) {
             throw new RuntimeException(e);
@@ -90,22 +105,33 @@ public class MyAsyncTask extends AsyncTask {
 
     @Override
     protected void onProgressUpdate(Object[] values) {
+        String data = valueOf(values[0]);
+
         Log.d(TAG, "onProgressUpdate: ");
-        Log.d(TAG, values[0].toString());
+        Log.d(TAG, data);
 
         Log.d(TAG, "values[0]="+values[1]);
 
         switch (parseInt(valueOf(values[1]))) {
             case 0:
-                b.name.setText("Name: " + values[0]);
+                b.name.setText(data);
                 break;
             case 1:
-                b.email.setText("Email: " + values[0]);
+                b.phoneNumber.setText(data);
                 break;
             case 2:
-                b.gender.setText("Gender: " + values[0]);
+                b.email.setText(data);
                 break;
             case 3:
+                b.address.setText(data);
+                break;
+            case 4:
+                b.birthday.setText(data);
+                break;
+            case 5:
+                b.gender.setText(data);
+                break;
+            case 6:
                 Picasso.get().load(values[0].toString()).into(b.image);
                 break;
         }
