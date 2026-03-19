@@ -6,4 +6,9 @@
     </style>
 
     <style name="Theme.RestAPI" parent="Base.Theme.RestAPI" />
+
+    <style name="RoundedCorners">
+        <item name="cornerSize">16dp</item>
+        <item name="cornerFamily">rounded</item>
+    </style>
 </resources>

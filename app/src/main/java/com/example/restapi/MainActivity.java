@@ -12,6 +12,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.restapi.Fragment.HomeFragment;
+import com.example.restapi.Fragment.ItemListFragment;
 import com.example.restapi.databinding.ActivityMainBinding;
 
 import java.util.HashMap;
@@ -22,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding b;
 
     HashMap<Integer, Fragment> fragmentMap;
+    Fragment activeFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +43,9 @@ public class MainActivity extends AppCompatActivity {
             requestPermissions(new String[]{ Manifest.permission.INTERNET }, 1);
         }
 
-        b.btn.setOnClickListener(v -> {
-            startActivity(new Intent(getApplicationContext(), InfoActivity.class));
-        });
-
         fragmentMap = new HashMap<>();
-        fragmentMap.put(R.id.nav_home, new ItemListFragment());
+        fragmentMap.put(R.id.nav_home, new HomeFragment());
+        fragmentMap.put(R.id.nav_list, new ItemListFragment());
 
         if (savedInstanceState == null) {
             b.bottomNavigation.setSelectedItemId(R.id.nav_home);
@@ -60,11 +60,22 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean loadFragment(Fragment fragment) {
         if (fragment != null) {
-            getSupportFragmentManager()
+            var transaction = getSupportFragmentManager()
                     .beginTransaction()
-                    .setReorderingAllowed(true)
-                    .replace(R.id.main_content, fragment)
-                    .commit();
+                    .setReorderingAllowed(true);
+
+            if (activeFragment != null) {
+                transaction.hide(activeFragment);
+            }
+
+            if (!fragment.isAdded()) {
+                transaction.add(R.id.main_content, fragment);
+            } else {
+                transaction.show(fragment);
+            }
+
+            transaction.commit();
+            activeFragment = fragment;
             return true;
         }
         return false;

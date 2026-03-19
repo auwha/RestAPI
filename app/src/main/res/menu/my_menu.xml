@@ -7,10 +7,11 @@
         app:showAsAction="never"
         android:title="Person" />
 
-<!--    <item-->
-<!--        android:id="@+id/nav_basket"-->
-<!--        android:icon="@drawable/baseline_dataset_24"-->
-<!--        android:title="@string/Basket" />-->
+    <item
+        android:id="@+id/nav_list"
+        android:icon="@drawable/round_person_24"
+        app:showAsAction="never"
+        android:title="List" />
 
 <!--    <item-->
 <!--        android:id="@+id/nav_search"-->
