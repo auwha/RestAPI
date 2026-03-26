@@ -26,10 +26,6 @@ public class HomeFragment extends Fragment {
 
         FragmentHomeBinding b = FragmentHomeBinding.inflate(inflater, container, false);
 
-        b.btn.setOnClickListener(v -> {
-            startActivity(new Intent(getContext(), InfoActivity.class));
-        });
-
         return b.getRoot();
     }
 }

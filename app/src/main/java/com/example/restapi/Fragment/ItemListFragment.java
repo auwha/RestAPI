@@ -39,6 +39,13 @@ public class ItemListFragment extends Fragment {
             itemAdapter.notifyDataSetChanged();
         });
 
+        b.buttonAddItem.setOnClickListener(v -> {
+            callAPI.execute(1, items -> {
+                itemAdapter.addToDataset(items.get(0));
+                itemAdapter.notifyItemInserted(itemAdapter.getItemCount()-1);
+            });
+        });
+
         return b.getRoot();
     }
 }

@@ -10,6 +10,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.restapi.databinding.ActivityInfoBinding;
 import com.example.restapi.databinding.ActivityMainBinding;
+import com.squareup.picasso.Picasso;
 
 public class InfoActivity extends AppCompatActivity {
 
@@ -28,7 +29,14 @@ public class InfoActivity extends AppCompatActivity {
             return insets;
         });
 
-        MyAsyncTask myAsyncTask = new MyAsyncTask(b);
-        myAsyncTask.execute();
+        var extras = getIntent().getExtras();
+
+        b.name.setText(extras.getString("name"));
+        b.email.setText(extras.getString("email"));
+        b.phoneNumber.setText(extras.getString("phone"));
+        b.address.setText(extras.getString("address"));
+        b.birthday.setText(extras.getString("birthday"));
+        b.gender.setText(extras.getString("gender"));
+        Picasso.get().load(extras.getString("image")).into(b.image);
     }
 }

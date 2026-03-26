@@ -1,5 +1,7 @@
 package com.example.restapi;
 
+import static java.lang.String.format;
+
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -59,12 +61,28 @@ public class CallAPI {
             JSONObject name = p.getJSONObject("name");
             JSONObject picture = p.getJSONObject("picture");
             String fullName = String.format("%s. %s %s", name.getString("title"), name.getString("first"), name.getString("last"));
+            JSONObject address = p.getJSONObject("location");
+            JSONObject street = address.getJSONObject("street");
+            String fullAddress = format("%s %s, %s, %s",
+                    street.getString("number"),
+                    street.getString("name"),
+                    address.getString("city"),
+                    address.getString("country"));
+            JSONObject birthday = p.getJSONObject("dob");
+            String date = birthday.getString("date");
+            date = date.substring(0, 10);
+
+
 
             list.add(
                     new Item(
                             fullName,
+                            picture.getString("large"),
+                            p.getString("phone"),
                             p.getString("email"),
-                            picture.getString("large")
+                            fullAddress,
+                            date,
+                            p.getString("gender")
                     )
             );
         }

@@ -1,6 +1,7 @@
 package com.example.restapi;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         this.dataset = dataset;
     }
 
+    public void addToDataset(Item item) {
+        this.dataset.add(item);
+    }
+
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -43,15 +48,29 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         String name = dataset.get(position).getName();
-        String description = dataset.get(position).getDescription();
         String imageLink = dataset.get(position).getImageLink();
+        String phone = dataset.get(position).getPhone();
+        String email = dataset.get(position).getEmail();
+        String address = dataset.get(position).getAddress();
+        String birthday = dataset.get(position).getBirthday();
+        String gender = dataset.get(position).getGender();
 
         holder.nameTV.setText(name);
-        holder.descriptionTV.setText(description);
+        holder.descriptionTV.setText(email);
         Picasso.get().load(imageLink).into(holder.iconIV);
 
         holder.itemView.setOnClickListener(v -> {
             Toast.makeText(context, name, Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(context, InfoActivity.class);
+            intent.putExtra("name", name);
+            intent.putExtra("image", imageLink);
+            intent.putExtra("phone", phone);
+            intent.putExtra("email", email);
+            intent.putExtra("address", address);
+            intent.putExtra("birthday", birthday);
+            intent.putExtra("gender", gender);
+            context.startActivity(intent);
         });
     }
 
